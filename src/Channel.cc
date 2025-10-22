@@ -25,7 +25,7 @@ void Channel::tie(const std::shared_ptr<void>&obj)
 
 void Channel::update()
 {
-    loop_->updataChannel(this);
+    loop_->updateChannel(this);
 }
 
 void Channel::remove()
