@@ -10,7 +10,7 @@
 #include "Poller.h"
 
 // 防止一个线程创建多个EventLoop
-__thread EventLoop* t_loopInThisThread = nullptr;
+thread_local EventLoop* t_loopInThisThread = nullptr;
 
 // 定义默认的Poller IO复用接口的超时时间
 const int kPollTimeMs = 10000; // 10000毫秒 = 10秒钟
@@ -44,8 +44,8 @@ int createEventfd()
 EventLoop::EventLoop()
     : looping_(false)
     , quit_(false)
-    , callingPendingFunctors_(false)
     , threadId_(CurrentThread::tid())
+    , callingPendingFunctors_(false)
     , poller_(Poller::newDefaultPoller(this))
     , wakeupFd_(createEventfd())
     , wakeupChannel_(new Channel(this, wakeupFd_))
